@@ -61,6 +61,7 @@ public class PacienteControllerMockMvcIT extends AbstractIntegration {
                 .andExpect(status().isCreated());
     }
 
+    @SuppressWarnings("unused")
     private void getPacienteById(Long id, Paciente expected) throws Exception {
         mockMvc.perform(get("/paciente/" + id))
                 .andExpect(status().is2xxSuccessful())
