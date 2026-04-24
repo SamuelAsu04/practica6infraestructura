@@ -20,4 +20,4 @@ jobs:
           cache: maven
  
       - name: Compile
-        run: mvn compile --batch-mode
+        run: ./mvnw compile --no-transfer-progress
