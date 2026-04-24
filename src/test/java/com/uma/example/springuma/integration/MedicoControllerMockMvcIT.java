@@ -25,6 +25,7 @@ public class MedicoControllerMockMvcIT extends AbstractIntegration {
     private Medico medico;
 
     @BeforeEach
+    @SuppressWarnings("unused")
     void setUp() {
         medico = new Medico();
         medico.setId(1L);

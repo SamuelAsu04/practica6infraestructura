@@ -14,7 +14,6 @@ import org.springframework.web.reactive.function.BodyInserters;
 
 import com.uma.example.springuma.integration.base.AbstractIntegration;
 import com.uma.example.springuma.model.Imagen;
-import com.uma.example.springuma.model.Informe;
 import com.uma.example.springuma.model.Medico;
 import com.uma.example.springuma.model.Paciente;
 
@@ -32,7 +31,6 @@ public class InformeControllerWebTestClientIT extends AbstractIntegration {
     private Medico medico;
     private Paciente paciente;
     private Imagen imagen;
-    private Informe informe;
 
     @PostConstruct
     public void init() {
@@ -41,6 +39,7 @@ public class InformeControllerWebTestClientIT extends AbstractIntegration {
     }
 
     @BeforeEach
+    @SuppressWarnings("unused")
     void setUp() {
 
         medico = new Medico();
