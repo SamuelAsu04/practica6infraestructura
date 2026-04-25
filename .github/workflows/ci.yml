@@ -38,63 +38,52 @@ jobs:
         - run: chmod +x mvnw
         - run: ./mvnw verify --no-transfer-progress
         - if: always()
-  standard-reports-test:
-    needs: test
+  report:
     runs-on: ubuntu-latest
+    needs: integration-test
+    if: always()
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-      - name: Basic Test Report
-        uses: ./
+      - uses: actions/checkout@v4
+
+      - name: Install ctrf dependencies
+        run: npm install
+
+      - name: JUnit XML → CTRF
+        uses: ctrf-io/github-test-reporter@v1
         with:
-          report-path: './ctrf-reports/ctrf-report.json'
+          report-path: './target/failsafe-reports/*.xml'
+          integrations-config: |
+            {
+              "junit-to-ctrf": {
+                "enabled": true,
+                "action": "convert",
+                "options": {
+                  "output": "./ctrf/ctrf-report.json",
+                  "toolname": "maven-failsafe"
+                }
+              }
+            }
+
+      - name: Summary Report
+        uses: ctrf-io/github-test-reporter@v1
+        with:
+          report-path: './ctrf/ctrf-report.json'
           summary-report: true
-          annotate: false
-        if: always()
-  github-report-test:
-    needs: test
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-      - name: Detailed Test Report
-        uses: ./
-        with:
-          report-path: './ctrf-reports/ctrf-report.json'
-          github-report: true
-          annotate: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        if: always()
-  detailed-reports-test:
-    needs: test
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-      - name: Detailed Test Report
-        uses: ./
+
+      - name: Failed Report
+        uses: ctrf-io/github-test-reporter@v1
         with:
-          report-path: './ctrf-reports/ctrf-report.json'
-          test-report: true
-          test-list-report: true
-          annotate: false
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        if: always()
-  failed-reports-test:
-    needs: test
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-      - name: Failed Test Reports
-        uses: ./
-        with:
-          report-path: './ctrf-reports/ctrf-report.json'
+          report-path: './ctrf/ctrf-report.json'
           failed-report: true
-          failed-folded-report: true
-          annotate: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        if: always()
+
+      - name: GitHub Report
+        uses: ctrf-io/github-test-reporter@v1
+        with:
+          report-path: './ctrf/ctrf-report.json'
+          github-report: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
