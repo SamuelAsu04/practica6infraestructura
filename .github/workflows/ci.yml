@@ -38,10 +38,6 @@ jobs:
     if: always()
     steps:
       - uses: actions/checkout@v4
-
-      - name: Install ctrf dependencies
-        run: npm install
-
       - name: JUnit XML → CTRF
         uses: ctrf-io/github-test-reporter@v1
         with:
