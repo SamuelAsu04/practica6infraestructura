@@ -36,4 +36,64 @@ jobs:
               cache: maven
         - run: chmod +x mvnw
         - run: ./mvnw verify --no-transfer-progress
-       
+  reports:
+    standard-reports-test:
+      needs: test
+      runs-on: ubuntu-latest
+      steps:
+        - name: Checkout code
+          uses: actions/checkout@v6
+        - name: Basic Test Report
+          uses: ./
+          with:
+            report-path: './ctrf-reports/ctrf-report.json'
+            summary-report: true
+            annotate: false
+          if: always()
+    github-report-test:
+      needs: test
+      runs-on: ubuntu-latest
+      steps:
+        - name: Checkout code
+          uses: actions/checkout@v6
+        - name: Detailed Test Report
+          uses: ./
+          with:
+            report-path: './ctrf-reports/ctrf-report.json'
+            github-report: true
+            annotate: false
+          env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          if: always()
+    detailed-reports-test:
+      needs: test
+      runs-on: ubuntu-latest
+      steps:
+        - name: Checkout code
+          uses: actions/checkout@v6
+        - name: Detailed Test Report
+          uses: ./
+          with:
+            report-path: './ctrf-reports/ctrf-report.json'
+            test-report: true
+            test-list-report: true
+            annotate: false
+          env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          if: always()
+    failed-reports-test:
+      needs: test
+      runs-on: ubuntu-latest
+      steps:
+        - name: Checkout code
+          uses: actions/checkout@v6
+        - name: Failed Test Reports
+          uses: ./
+          with:
+            report-path: './ctrf-reports/ctrf-report.json'
+            failed-report: true
+            failed-folded-report: true
+            annotate: false
+          env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          if: always()
