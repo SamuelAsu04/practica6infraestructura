@@ -39,7 +39,7 @@ jobs:
         - run: ./mvnw verify --no-transfer-progress
   report:
     runs-on: ubuntu-latest
-    needs: integration-test
+    needs: test
     if: always()
     steps:
       - uses: actions/checkout@v4
