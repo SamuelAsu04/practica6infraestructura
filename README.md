@@ -8,6 +8,7 @@ A Spring Boot REST API that models a small medical records system. Built as a pr
 ![Compile](https://github.com/SamuelAsu04/practica6infraestructura/actions/workflows/compile.yml/badge.svg)
 ![Test](https://github.com/SamuelAsu04/practica6infraestructura/actions/workflows/test.yml/badge.svg)
 ![Reports](https://github.com/SamuelAsu04/practica6infraestructura/actions/workflows/reports.yml/badge.svg)
+![Cobertura](https://github.com/SamuelAsu04/practica6infraestructura/blob/main/.github/badges/jacoco.svg)
 
 ## Domain Model
 

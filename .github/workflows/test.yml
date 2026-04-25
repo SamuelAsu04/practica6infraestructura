@@ -32,3 +32,14 @@ jobs:
               cache: maven
         - run: chmod +x mvnw
         - run: ./mvnw verify --no-transfer-progress
+
+        - name: Generar badge de cobertura
+          uses: cicirello/jacoco-badge-generator@v2
+          with:
+            jacoco-csv-file: target/site/jacoco/jacoco.csv
+
+        - name: Subir badge al repo
+          uses: stefanzweifel/git-auto-commit-action@v5
+          with:
+            commit_message: "ci: actualizar badge de cobertura"
+            file_pattern: ".github/badges/*.svg"
