@@ -38,42 +38,17 @@ jobs:
     if: always()
     steps:
       - uses: actions/checkout@v4
-      - name: JUnit XML → CTRF
+      - name: Publish Test Report
         uses: ctrf-io/github-test-reporter@v1
         with:
-          report-path: './target/failsafe-reports/*.xml'
-          integrations-config: |
-            {
-              "junit-to-ctrf": {
-                "enabled": true,
-                "action": "convert",
-                "options": {
-                  "output": "./ctrf/ctrf-report.json",
-                  "toolname": "maven-failsafe"
-                }
-              }
-            }
-
-      - name: Summary Report
-        uses: ctrf-io/github-test-reporter@v1
-        with:
-          report-path: './ctrf/ctrf-report.json'
-          summary-report: true
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Failed Report
-        uses: ctrf-io/github-test-reporter@v1
-        with:
-          report-path: './ctrf/ctrf-report.json'
-          failed-report: true
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: GitHub Report
-        uses: ctrf-io/github-test-reporter@v1
-        with:
-          report-path: './ctrf/ctrf-report.json'
+          report-path: './ctrf/*.json'
           github-report: true
+          summary-delta-report: true
+          insights-report: true
+          flaky-rate-report: true
+          fail-rate-report: true
+          slowest-report: true
+          upload-artifact: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        if: always()
